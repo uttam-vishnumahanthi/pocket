@@ -1,37 +1,39 @@
 <!-- GitHub Pages deployment refresh -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PocketPilot — Expense Tracker</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <!-- Main Mobile Shell Container -->
   <div class="app-container">
-    
+
     <!-- App Header (Greeting and Profile Avatar) -->
     <header class="app-header">
       <div class="greeting-container">
         <span class="greeting-text" id="greeting-time">Hey</span>
         <h1 class="username-text" id="username-display">Uttam</h1>
       </div>
-      <button class="profile-btn" aria-label="Profile Menu" id="profile-trigger"></button>
+      <button class="profile-btn" aria-label="Profile Menu" id="profile-trigger">P</button>
     </header>
 
     <!-- Scrollable Content Views -->
     <main class="scrollable-content" id="main-content-scroll">
-      
+
       <!-- 1. DASHBOARD VIEW -->
       <section id="view-dashboard" class="view-content active">
-        
+
         <!-- Overview Card (Matches UI Screenshot) -->
         <div class="overview-card">
           <div class="overview-card-label">Total Spent</div>
           <div class="overview-card-amount" id="total-spent-display">₹12,505.58</div>
-          
+
           <div class="overview-subtext-container">
             <span class="overview-period">This month</span>
             <span class="overview-growth" id="growth-rate-badge">+8.4% vs last month</span>
@@ -44,7 +46,8 @@
               <div class="balance-item-val" id="current-balance-display">₹4,500.00</div>
             </div>
             <button class="add-money-btn" id="open-add-income-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
@@ -75,7 +78,7 @@
 
       <!-- 2. HISTORY VIEW -->
       <section id="view-history" class="view-content">
-        
+
         <!-- Search and Filters Section -->
         <div class="search-filter-section">
           <div class="search-bar-wrapper">
@@ -83,7 +86,8 @@
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" class="input-field search-input" id="search-transactions-input" placeholder="Search notes or categories...">
+            <input type="text" class="input-field search-input" id="search-transactions-input"
+              placeholder="Search notes or categories...">
           </div>
 
           <!-- Quick Filters Tags -->
@@ -106,9 +110,9 @@
 
       <!-- 3. ANALYTICS VIEW -->
       <section id="view-analytics" class="view-content">
-        
+
         <div class="analytics-container">
-          
+
           <!-- Stat Cards Grid -->
           <div class="analytics-card">
             <h3 class="analytics-title">Monthly Summary</h3>
@@ -122,11 +126,13 @@
                 <div class="stat-val expense" id="stat-total-spent">₹12,505.58</div>
               </div>
             </div>
-            
+
             <div class="stat-item" style="background-color: var(--primary-light);">
               <span class="stat-label" style="color: var(--primary);">Net Monthly Savings</span>
-              <div class="stat-val" id="stat-net-savings" style="color: var(--primary); font-size: 20px;">₹12,494.42</div>
-              <span class="helper-text-sub" id="stat-savings-percentage" style="color: var(--primary-medium); font-weight: 600;">50% of income saved</span>
+              <div class="stat-val" id="stat-net-savings" style="color: var(--primary); font-size: 20px;">₹12,494.42
+              </div>
+              <span class="helper-text-sub" id="stat-savings-percentage"
+                style="color: var(--primary-medium); font-weight: 600;">50% of income saved</span>
             </div>
           </div>
 
@@ -227,7 +233,8 @@
           <!-- Currency Input -->
           <div class="amount-input-wrapper">
             <span class="currency-symbol">₹</span>
-            <input type="number" step="0.01" min="0.01" class="amount-field" id="expense-amount" placeholder="0.00" required>
+            <input type="number" step="0.01" min="0.01" class="amount-field" id="expense-amount" placeholder="0.00"
+              required>
           </div>
 
           <!-- Category Selector -->
@@ -263,7 +270,8 @@
           <!-- Note/Memo input -->
           <div class="form-group">
             <label class="form-label" for="expense-note">Note</label>
-            <input type="text" class="input-field" id="expense-note" placeholder="What did you spend this on?" maxlength="50">
+            <input type="text" class="input-field" id="expense-note" placeholder="What did you spend this on?"
+              maxlength="50">
           </div>
 
           <!-- Modal Action Buttons (Add, Update, Cancel, Delete) -->
@@ -291,7 +299,8 @@
           <!-- Currency Input -->
           <div class="amount-input-wrapper">
             <span class="currency-symbol">₹</span>
-            <input type="number" step="0.01" min="0.01" class="amount-field" id="income-amount" placeholder="0.00" required>
+            <input type="number" step="0.01" min="0.01" class="amount-field" id="income-amount" placeholder="0.00"
+              required>
           </div>
 
           <!-- Date/Time input -->
@@ -303,7 +312,8 @@
           <!-- Note input -->
           <div class="form-group">
             <label class="form-label" for="income-note">Source / Note</label>
-            <input type="text" class="input-field" id="income-note" placeholder="E.g. Pocket money, Salary, Gift..." maxlength="50" required>
+            <input type="text" class="input-field" id="income-note" placeholder="E.g. Pocket money, Salary, Gift..."
+              maxlength="50" required>
           </div>
 
           <div class="modal-actions">
@@ -318,4 +328,5 @@
 
   <script src="app.js"></script>
 </body>
+
 </html>

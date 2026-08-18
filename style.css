@@ -112,27 +112,29 @@ h1, h2, h3, h4, .amount-display {
   margin-top: 2px;
 }
 
-/* Profile button with inner dot (matching screenshot) */
+/* Profile button styled as the brand icon (gradient + P) */
 .profile-btn {
   width: 44px;
   height: 44px;
-  background-color: var(--card-bg);
-  border-radius: 50%;
+  background: linear-gradient(135deg, #85EDA1 0%, #2EC8CD 50%, #2193E6 100%);
+  border-radius: 12px;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  position: relative;
+  box-shadow: 0 4px 12px rgba(33, 147, 230, 0.2);
+  color: #FFFFFF;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.profile-btn::after {
-  content: '';
-  width: 8px;
-  height: 8px;
-  background-color: var(--primary);
-  border-radius: 50%;
+.profile-btn:hover {
+  transform: translateY(-1px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(33, 147, 230, 0.3);
 }
 
 /* Overview Card (matching screenshot) */
