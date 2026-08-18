@@ -11,86 +11,16 @@ let state = {
   currentView: "dashboard"
 };
 
-// Initial Seed Data (Matches the UI screenshot exactly on first load)
+// Initial Seed Data (Empty by default for a fresh start)
 const DEFAULT_SEED_DATA = {
-  expenses: [
-    {
-      id: "exp-1",
-      amount: 320.00,
-      category: "food",
-      type: "need",
-      datetime: "2026-08-18T13:20:00", // Today at 1:20 PM
-      note: "Lunch at cafe"
-    },
-    {
-      id: "exp-2",
-      amount: 180.00,
-      category: "transport",
-      type: "need",
-      datetime: "2026-08-18T09:10:00", // Today at 9:10 AM
-      note: "Metro card recharge"
-    },
-    {
-      id: "exp-3",
-      amount: 1250.00,
-      category: "shopping",
-      type: "want",
-      datetime: "2026-08-17T18:42:00", // Yesterday at 6:42 PM
-      note: "New t-shirt"
-    },
-    {
-      id: "exp-4",
-      amount: 499.00,
-      category: "entertainment",
-      type: "want",
-      datetime: "2026-08-16T20:30:00", // Aug 16 at 8:30 PM
-      note: "Movie ticket"
-    },
-    {
-      id: "exp-5",
-      amount: 5000.00,
-      category: "shopping",
-      type: "want",
-      datetime: "2026-08-12T14:15:00",
-      note: "Wireless headphones"
-    },
-    {
-      id: "exp-6",
-      amount: 4256.58,
-      category: "utilities",
-      type: "need",
-      datetime: "2026-08-05T11:30:00",
-      note: "Electricity & Wi-Fi bill"
-    },
-    {
-      id: "exp-7",
-      amount: 1000.00,
-      category: "groceries",
-      type: "need",
-      datetime: "2026-08-02T10:00:00",
-      note: "Weekly veggies & fruits"
-    }
-  ],
-  income: [
-    {
-      id: "inc-1",
-      amount: 15000.00,
-      note: "Monthly Pocket Money",
-      datetime: "2026-08-01T09:00:00"
-    },
-    {
-      id: "inc-2",
-      amount: 2005.58,
-      note: "Freelance design gig",
-      datetime: "2026-08-15T16:00:00"
-    }
-  ]
+  expenses: [],
+  income: []
 };
 
-// Seed/Load data from localStorage
+// Seed/Load data from localStorage (version v2 for a fresh start)
 function initStorage() {
-  const localExpenses = localStorage.getItem("pocket_expenses");
-  const localIncome = localStorage.getItem("pocket_income");
+  const localExpenses = localStorage.getItem("pocket_expenses_v2");
+  const localIncome = localStorage.getItem("pocket_income_v2");
   const localUser = localStorage.getItem("pocket_username");
 
   if (localExpenses && localIncome) {
@@ -98,8 +28,8 @@ function initStorage() {
     state.income = JSON.parse(localIncome);
   } else {
     // Write defaults to storage
-    localStorage.setItem("pocket_expenses", JSON.stringify(DEFAULT_SEED_DATA.expenses));
-    localStorage.setItem("pocket_income", JSON.stringify(DEFAULT_SEED_DATA.income));
+    localStorage.setItem("pocket_expenses_v2", JSON.stringify(DEFAULT_SEED_DATA.expenses));
+    localStorage.setItem("pocket_income_v2", JSON.stringify(DEFAULT_SEED_DATA.income));
     state.expenses = DEFAULT_SEED_DATA.expenses;
     state.income = DEFAULT_SEED_DATA.income;
   }
@@ -112,8 +42,8 @@ function initStorage() {
 }
 
 function saveState() {
-  localStorage.setItem("pocket_expenses", JSON.stringify(state.expenses));
-  localStorage.setItem("pocket_income", JSON.stringify(state.income));
+  localStorage.setItem("pocket_expenses_v2", JSON.stringify(state.expenses));
+  localStorage.setItem("pocket_income_v2", JSON.stringify(state.income));
 }
 
 // --- 2. DATE & TEXT FORMATTING HELPERS ---
@@ -300,6 +230,18 @@ function renderDashboard() {
   const totals = calculateTotals();
   DOM.totalSpent.textContent = formatCurrency(totals.monthlySpent);
   DOM.currentBalance.textContent = formatCurrency(totals.currentBalance);
+  
+  // Update growth badge dynamically
+  const growthBadge = document.getElementById("growth-rate-badge");
+  if (growthBadge) {
+    if (totals.monthlySpent === 0) {
+      growthBadge.textContent = "No spending yet";
+      growthBadge.style.color = "var(--text-light-muted)";
+    } else {
+      growthBadge.textContent = "Simple tracking active";
+      growthBadge.style.color = "var(--income-green)";
+    }
+  }
   
   // Render recent 4 expenses
   DOM.recentExpenses.innerHTML = "";
@@ -759,12 +701,8 @@ function initApp() {
   // Set User Name header display
   document.getElementById("username-display").textContent = state.userName;
   
-  // Set dynamic Greeting based on time of day
-  const hour = new Date().getHours();
-  let greeting = "Good morning";
-  if (hour >= 12 && hour < 17) greeting = "Good afternoon";
-  else if (hour >= 17) greeting = "Good evening";
-  document.getElementById("greeting-time").textContent = greeting;
+  // Set static Greeting to a simple "Hey"
+  document.getElementById("greeting-time").textContent = "Hey";
 
   // Run initial render of dashboard
   switchView("dashboard");
