@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PocketPilot — Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Main Mobile Shell Container -->
+  <div class="app-container">
+    
+    <!-- App Header (Greeting and Profile Avatar) -->
+    <header class="app-header">
+      <div class="greeting-container">
+        <span class="greeting-text" id="greeting-time">Good morning</span>
+        <h1 class="username-text" id="username-display">Uttam</h1>
+      </div>
+      <button class="profile-btn" aria-label="Profile Menu" id="profile-trigger"></button>
+    </header>
+
+    <!-- Scrollable Content Views -->
+    <main class="scrollable-content" id="main-content-scroll">
+      
+      <!-- 1. DASHBOARD VIEW -->
+      <section id="view-dashboard" class="view-content active">
+        
+        <!-- Overview Card (Matches UI Screenshot) -->
+        <div class="overview-card">
+          <div class="overview-card-label">Total Spent</div>
+          <div class="overview-card-amount" id="total-spent-display">₹12,505.58</div>
+          
+          <div class="overview-subtext-container">
+            <span class="overview-period">This month</span>
+            <span class="overview-growth" id="growth-rate-badge">+8.4% vs last month</span>
+          </div>
+
+          <!-- Extra Balance Row (V1 Pocket Money integration) -->
+          <div class="balance-sub-panel">
+            <div>
+              <div class="balance-item-title">Current Balance</div>
+              <div class="balance-item-val" id="current-balance-display">₹4,500.00</div>
+            </div>
+            <button class="add-money-btn" id="open-add-income-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Money
+            </button>
+          </div>
+        </div>
+
+        <!-- Section Title (Recent Expenses) -->
+        <div class="section-title-bar">
+          <h2 class="section-title">Recent expenses</h2>
+          <a class="view-all-link" id="view-all-history-link">View all</a>
+        </div>
+
+        <!-- Recent Expenses List -->
+        <div class="expense-list" id="recent-expenses-list">
+          <!-- Dynamic Dashboard items inserted by JS -->
+          <!-- Seeded Items matches screenshot: Food & dining, Transport, Shopping, Entertainment -->
+        </div>
+
+        <!-- Bottom Helper Info Card -->
+        <div class="helper-banner">
+          <p class="helper-text-bold">Tap + whenever you spend</p>
+          <p class="helper-text-sub">Manual entry &bull; simple tracking</p>
+        </div>
+
+      </section>
+
+      <!-- 2. HISTORY VIEW -->
+      <section id="view-history" class="view-content">
+        
+        <!-- Search and Filters Section -->
+        <div class="search-filter-section">
+          <div class="search-bar-wrapper">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="input-field search-input" id="search-transactions-input" placeholder="Search notes or categories...">
+          </div>
+
+          <!-- Quick Filters Tags -->
+          <div class="filter-tags" id="history-filter-tags">
+            <button class="filter-tag active" data-filter="all">All</button>
+            <button class="filter-tag" data-filter="need">Needs</button>
+            <button class="filter-tag" data-filter="want">Wants</button>
+            <button class="filter-tag" data-filter="income">Income</button>
+            <button class="filter-tag" data-filter="food">Food</button>
+            <button class="filter-tag" data-filter="shopping">Shopping</button>
+          </div>
+        </div>
+
+        <!-- Scrollable List of All Items -->
+        <div class="expense-list" id="full-history-list">
+          <!-- Full list of items loaded dynamically -->
+        </div>
+
+      </section>
+
+      <!-- 3. ANALYTICS VIEW -->
+      <section id="view-analytics" class="view-content">
+        
+        <div class="analytics-container">
+          
+          <!-- Stat Cards Grid -->
+          <div class="analytics-card">
+            <h3 class="analytics-title">Monthly Summary</h3>
+            <div class="stats-summary-grid">
+              <div class="stat-item">
+                <span class="stat-label">Total Income</span>
+                <div class="stat-val income" id="stat-total-income">₹25,000.00</div>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Total Spent</span>
+                <div class="stat-val expense" id="stat-total-spent">₹12,505.58</div>
+              </div>
+            </div>
+            
+            <div class="stat-item" style="background-color: var(--primary-light);">
+              <span class="stat-label" style="color: var(--primary);">Net Monthly Savings</span>
+              <div class="stat-val" id="stat-net-savings" style="color: var(--primary); font-size: 20px;">₹12,494.42</div>
+              <span class="helper-text-sub" id="stat-savings-percentage" style="color: var(--primary-medium); font-weight: 600;">50% of income saved</span>
+            </div>
+          </div>
+
+          <!-- Need vs Want split gauge -->
+          <div class="analytics-card">
+            <h3 class="analytics-title">Needs vs Wants Breakdown</h3>
+            <div class="ratio-bar-container">
+              <div class="ratio-bar-track">
+                <div class="ratio-fill-needs" id="needs-ratio-bar" style="width: 60%;"></div>
+                <div class="ratio-fill-wants" id="wants-ratio-bar" style="width: 40%;"></div>
+              </div>
+              <div class="ratio-labels">
+                <span class="ratio-lbl-needs" id="needs-ratio-label">Needs: 60%</span>
+                <span class="ratio-lbl-wants" id="wants-ratio-label">Wants: 40%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category totals bar list -->
+          <div class="analytics-card">
+            <h3 class="analytics-title">Category Spending</h3>
+            <div class="category-bars-list" id="analytics-category-bars">
+              <!-- Dynamically populated bars -->
+            </div>
+          </div>
+
+          <!-- Smart Insight Box -->
+          <div class="insight-box" id="smart-insight-box">
+            🎯 Awesome savings rate this month! You are keeping your Wants spending under control. Keep it up!
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Floating Action Button (FAB) (Matches UI screenshot) -->
+    <div class="fab-container" id="fab-action-wrapper">
+      <button class="fab" id="open-add-expense-btn" aria-label="Add expense">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+      <span class="fab-label">Add expense</span>
+    </div>
+
+    <!-- Bottom Tab Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" id="nav-dashboard-btn" data-tab="dashboard">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Expenses</span>
+      </button>
+      <button class="nav-item" id="nav-history-btn" data-tab="history">
+        <svg viewBox="0 0 24 24">
+          <line x1="8" y1="6" x2="21" y2="6"></line>
+          <line x1="8" y1="12" x2="21" y2="12"></line>
+          <line x1="8" y1="18" x2="21" y2="18"></line>
+          <line x1="3" y1="6" x2="3.01" y2="6"></line>
+          <line x1="3" y1="12" x2="3.01" y2="12"></line>
+          <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+        <span>History</span>
+      </button>
+      <button class="nav-item" id="nav-analytics-btn" data-tab="analytics">
+        <svg viewBox="0 0 24 24">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        <span>Analytics</span>
+      </button>
+    </nav>
+
+    <!-- ================= MODALS SYSTEM ================= -->
+
+    <!-- 1. ADD / EDIT EXPENSE MODAL (Bottom Sheet) -->
+    <div class="modal-overlay" id="expense-modal-overlay">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <h3 class="modal-title" id="expense-modal-title">Add Expense</h3>
+          <button class="close-modal-btn" id="close-expense-modal" aria-label="Close Modal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <form id="expense-form">
+          <!-- Hidden ID input for editing -->
+          <input type="hidden" id="edit-expense-id">
+
+          <!-- Currency Input -->
+          <div class="amount-input-wrapper">
+            <span class="currency-symbol">₹</span>
+            <input type="number" step="0.01" min="0.01" class="amount-field" id="expense-amount" placeholder="0.00" required>
+          </div>
+
+          <!-- Category Selector -->
+          <div class="form-group">
+            <label class="form-label" for="expense-category">Category</label>
+            <select class="input-field" id="expense-category" required>
+              <option value="food">Food & dining</option>
+              <option value="transport">Transport</option>
+              <option value="shopping">Shopping</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="utilities">Utilities</option>
+              <option value="groceries">Groceries</option>
+              <option value="others">Others</option>
+            </select>
+          </div>
+
+          <!-- Need / Want Segmented selector -->
+          <div class="form-group">
+            <label class="form-label">Type</label>
+            <div class="segmented-control">
+              <button type="button" class="segment-btn active" id="btn-type-need" data-type="need">Need</button>
+              <button type="button" class="segment-btn" id="btn-type-want" data-type="want">Want</button>
+            </div>
+            <input type="hidden" id="expense-type" value="need">
+          </div>
+
+          <!-- Date/Time input -->
+          <div class="form-group">
+            <label class="form-label" for="expense-datetime">Date & Time</label>
+            <input type="datetime-local" class="input-field" id="expense-datetime" required>
+          </div>
+
+          <!-- Note/Memo input -->
+          <div class="form-group">
+            <label class="form-label" for="expense-note">Note</label>
+            <input type="text" class="input-field" id="expense-note" placeholder="What did you spend this on?" maxlength="50">
+          </div>
+
+          <!-- Modal Action Buttons (Add, Update, Cancel, Delete) -->
+          <div class="modal-actions" id="expense-actions-container">
+            <button type="submit" class="btn btn-primary" id="btn-save-expense">Save Expense</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 2. ADD INCOME MODAL (Bottom Sheet) -->
+    <div class="modal-overlay" id="income-modal-overlay">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <h3 class="modal-title">Add Pocket Money</h3>
+          <button class="close-modal-btn" id="close-income-modal" aria-label="Close Modal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <form id="income-form">
+          <!-- Currency Input -->
+          <div class="amount-input-wrapper">
+            <span class="currency-symbol">₹</span>
+            <input type="number" step="0.01" min="0.01" class="amount-field" id="income-amount" placeholder="0.00" required>
+          </div>
+
+          <!-- Date/Time input -->
+          <div class="form-group">
+            <label class="form-label" for="income-datetime">Date & Time</label>
+            <input type="datetime-local" class="input-field" id="income-datetime" required>
+          </div>
+
+          <!-- Note input -->
+          <div class="form-group">
+            <label class="form-label" for="income-note">Source / Note</label>
+            <input type="text" class="input-field" id="income-note" placeholder="E.g. Pocket money, Salary, Gift..." maxlength="50" required>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-income">Cancel</button>
+            <button type="submit" class="btn btn-primary">Add Balance</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
